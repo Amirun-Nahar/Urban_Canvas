@@ -6,6 +6,19 @@ export const getPlatformStatistics = async () => {
   return response.data;
 };
 
+// Get real-time statistics for dashboard updates
+export const getRealTimeStatistics = async () => {
+  // Temporarily use the working statistics endpoint until realtime is deployed
+  const response = await axiosInstance.get('/admin/statistics');
+  return response.data;
+};
+
+// Debug endpoint to check offers data (remove in production)
+export const debugOffers = async () => {
+  const response = await axiosInstance.get('/admin/debug/offers');
+  return response.data;
+};
+
 // Get all properties (admin only)
 export const getAllProperties = async () => {
   const response = await axiosInstance.get('/admin/properties/all');
