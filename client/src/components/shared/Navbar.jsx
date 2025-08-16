@@ -69,7 +69,11 @@ const Navbar = () => {
             {[
               { to: '/', icon: <FaHome />, label: 'Home' },
               { to: '/properties', icon: <FaBuilding />, label: 'Properties' },
-              ...(currentUser ? [{ to: '/dashboard', label: 'Dashboard' }] : [])
+              ...(currentUser ? [
+                { to: '/dashboard', label: 'Dashboard' },
+                { to: '/dashboard/overview', label: 'Overview' },
+                { to: '/dashboard/profile', label: 'Profile' }
+              ] : [])
             ].map((item) => (
               <NavLink 
                 key={item.to}
@@ -177,7 +181,11 @@ const Navbar = () => {
                 {[
                   { to: '/', icon: <FaHome />, label: 'Home' },
                   { to: '/properties', icon: <FaBuilding />, label: 'Properties' },
-                  ...(currentUser ? [{ to: '/dashboard', label: 'Dashboard' }] : [])
+                  ...(currentUser ? [
+                    { to: '/dashboard', label: 'Dashboard' },
+                    { to: '/dashboard/overview', label: 'Overview' },
+                    { to: '/dashboard/profile', label: 'Profile' }
+                  ] : [])
                 ].map((item) => (
                   <NavLink 
                     key={item.to}
