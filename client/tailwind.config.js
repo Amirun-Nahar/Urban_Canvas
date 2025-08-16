@@ -79,27 +79,17 @@ module.exports = {
           "primary": "#0a84ff",
           "secondary": "#73849c",
           "accent": "#d69a2c",
-          "neutral": "#394250",
           "base-100": "#ffffff",
           "base-200": "#f6f8fa",
-          "base-300": "#edf1f5",
-          "success": "#10b981",
-          "warning": "#f59e0b",
-          "error": "#ef4444",
-          "info": "#3b82f6"
+          "base-300": "#edf1f5"
         },
         dark: {
           "primary": "#3aa1ff",
           "secondary": "#94a6bb",
           "accent": "#e0b85c",
-          "neutral": "#dce3eb",
           "base-100": "#1a1f2b",
           "base-200": "#242935",
-          "base-300": "#2e3444",
-          "success": "#34d399",
-          "warning": "#fbbf24",
-          "error": "#f87171",
-          "info": "#60a5fa"
+          "base-300": "#2e3444"
         }
       }
     ],
