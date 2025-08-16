@@ -4,7 +4,7 @@ A modern, full-stack real estate platform built with React, Node.js, and MongoDB
 
 ## 🌟 Live Demo
 
-**[Urban Canvas Live Site](https://urban-canvas.netlify.app/)**
+**[Urban Canvas Live Site](https://urban-canvas.netlify.app)**
 
 ## ✨ Key Features
 
@@ -87,8 +87,8 @@ A modern, full-stack real estate platform built with React, Node.js, and MongoDB
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/urban-canvas.git
-   cd urban-canvas
+   git clone https://github.com/Amirun-Nahar/Urban_Canvas-Backend.git
+   cd Urban_Canvas-Backend
    ```
 
 2. **Install dependencies**
@@ -107,19 +107,19 @@ A modern, full-stack real estate platform built with React, Node.js, and MongoDB
    **Backend (.env)**
    ```env
    PORT=5000
-   MONGODB_URI=your_mongodb_connection_string
+   MONGO_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
-   FIREBASE_API_KEY=your_firebase_api_key
-   FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+   FIREBASE_TYPE=service_account
    FIREBASE_PROJECT_ID=your_firebase_project_id
-   FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
-   FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
-   FIREBASE_APP_ID=your_firebase_app_id
+   FIREBASE_PRIVATE_KEY_ID=your_firebase_private_key_id
+   FIREBASE_PRIVATE_KEY=your_firebase_private_key
    ```
 
    **Frontend (.env.local)**
    ```env
-   VITE_API_BASE_URL=http://localhost:5000
+   VITE_API_BASE_URL=http://localhost:5000/api
    VITE_FIREBASE_API_KEY=your_firebase_api_key
    VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
    VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
@@ -152,12 +152,14 @@ urban-canvas/
 │   │   │   ├── adminAPI.js          # Admin-specific API calls
 │   │   │   ├── authAPI.js           # Authentication API calls
 │   │   │   ├── offerAPI.js          # Offer management API calls
+│   │   │   ├── paymentAPI.js        # Payment API calls
 │   │   │   ├── propertyAPI.js       # Property management API calls
 │   │   │   ├── reviewAPI.js         # Review system API calls
 │   │   │   └── wishlistAPI.js       # Wishlist API calls
 │   │   ├── assets/                  # Static assets (images, icons)
 │   │   ├── components/              # Reusable UI components
 │   │   │   ├── shared/              # Shared components (Navbar, Footer)
+│   │   │   ├── dashboard/           # Dashboard components
 │   │   │   └── ConfirmDialog.jsx    # Confirmation dialog component
 │   │   ├── contexts/                # React contexts
 │   │   │   ├── AuthContext.jsx      # Authentication context
@@ -189,8 +191,10 @@ urban-canvas/
 │
 ├── server/                          # Backend Node.js application
 │   ├── config/                      # Configuration files
+│   │   └── firebase-admin.js        # Firebase Admin SDK setup
 │   ├── middleware/                  # Custom middleware
-│   │   └── auth.js                  # Authentication middleware
+│   │   ├── auth.js                  # Authentication middleware
+│   │   └── firebase-auth.js         # Firebase authentication middleware
 │   ├── models/                      # Mongoose models
 │   │   ├── User.js                  # User model
 │   │   ├── Property.js              # Property model
@@ -203,11 +207,12 @@ urban-canvas/
 │   │   ├── reviews.js               # Review routes
 │   │   ├── wishlist.js              # Wishlist routes
 │   │   ├── offers.js                # Offer routes
-│   │   └── admin.js                 # Admin routes
+│   │   ├── admin.js                 # Admin routes
+│   │   └── payment.js               # Payment routes
 │   ├── index.js                     # Server entry point
 │   └── package.json                 # Backend dependencies
 │
-├── .env                             # Environment variables
+├── .env                             # Environment variables (DO NOT COMMIT)
 ├── .gitignore                       # Git ignore file
 └── README.md                        # Project documentation
 ```
@@ -215,45 +220,49 @@ urban-canvas/
 ## 🔌 API Endpoints
 
 ### Authentication
-- `POST /auth/register` - User registration
-- `POST /auth/login` - User login
-- `GET /auth/me` - Get current user
+- `POST /api/auth/register` - User registration
+- `POST /api/auth/login` - User login
+- `GET /api/auth/me` - Get current user
 
 ### Properties
-- `GET /properties` - Get all verified properties
-- `GET /properties/:id` - Get property by ID
-- `GET /properties/advertised` - Get advertised properties
-- `POST /properties` - Add new property (agent only)
-- `PUT /properties/:id` - Update property (agent only)
-- `DELETE /properties/:id` - Delete property (agent only)
+- `GET /api/properties` - Get all verified properties
+- `GET /api/properties/:id` - Get property by ID
+- `GET /api/properties/advertised` - Get advertised properties
+- `POST /api/properties` - Add new property (agent only)
+- `PUT /api/properties/:id` - Update property (agent only)
+- `DELETE /api/properties/:id` - Delete property (agent only)
 
 ### Admin
-- `GET /admin/statistics` - Get platform statistics
-- `GET /admin/properties/all` - Get all properties (admin only)
-- `PATCH /admin/properties/:id/verify` - Verify property (admin only)
-- `PATCH /admin/properties/:id/reject` - Reject property (admin only)
-- `PATCH /admin/properties/:id/advertise` - Toggle advertisement (admin only)
-- `GET /admin/users` - Get all users (admin only)
-- `PATCH /admin/users/:id/make-admin` - Make user admin (admin only)
-- `PATCH /admin/users/:id/make-agent` - Make user agent (admin only)
-- `DELETE /admin/users/:id` - Delete user (admin only)
+- `GET /api/admin/statistics` - Get platform statistics
+- `GET /api/admin/properties/all` - Get all properties (admin only)
+- `PATCH /api/admin/properties/:id/verify` - Verify property (admin only)
+- `PATCH /api/admin/properties/:id/reject` - Reject property (admin only)
+- `PATCH /api/admin/properties/:id/advertise` - Toggle advertisement (admin only)
+- `GET /api/admin/users` - Get all users (admin only)
+- `PATCH /api/admin/users/:id/make-admin` - Make user admin (admin only)
+- `PATCH /api/admin/users/:id/make-agent` - Make user agent (admin only)
+- `DELETE /api/admin/users/:id` - Delete user (admin only)
 
 ### Offers
-- `POST /offers` - Make an offer
-- `GET /offers/agent/:email` - Get agent offers
-- `GET /offers/buyer/:email` - Get buyer offers
-- `PATCH /offers/accept/:id` - Accept offer
-- `PATCH /offers/reject/:id` - Reject offer
+- `POST /api/offers` - Make an offer
+- `GET /api/offers/agent/:email` - Get agent offers
+- `GET /api/offers/buyer/:email` - Get buyer offers
+- `PATCH /api/offers/accept/:id` - Accept offer
+- `PATCH /api/offers/reject/:id` - Reject offer
 
 ### Reviews
-- `POST /reviews` - Add review
-- `GET /reviews/property/:id` - Get property reviews
-- `GET /reviews/user/:email` - Get user reviews
+- `POST /api/reviews` - Add review
+- `GET /api/reviews/property/:id` - Get property reviews
+- `GET /api/reviews/user/:email` - Get user reviews
 
 ### Wishlist
-- `POST /wishlist` - Add to wishlist
-- `GET /wishlist/:email` - Get user wishlist
-- `DELETE /wishlist/:id` - Remove from wishlist
+- `POST /api/wishlist` - Add to wishlist
+- `GET /api/wishlist/:email` - Get user wishlist
+- `DELETE /api/wishlist/:id` - Remove from wishlist
+
+### Payment
+- `POST /api/payment/create-payment-intent` - Create Stripe payment intent
+- `POST /api/payment/confirm-payment` - Confirm payment
 
 ## 👥 User Roles & Permissions
 
@@ -288,7 +297,7 @@ urban-canvas/
 ### Offer Management
 - Users can make offers on properties
 - Agents can accept or reject offers
-- Complete payment flow integration
+- Complete payment flow integration with Stripe
 - Transaction tracking and history
 
 ### Fraud Prevention
@@ -337,15 +346,17 @@ urban-canvas/
    ```env
    NODE_ENV=production
    PORT=10000
-   MONGODB_URI=your_mongodb_atlas_connection_string
+   MONGO_URI=your_mongodb_atlas_connection_string
    JWT_SECRET=your_secure_jwt_secret_key
-   FIREBASE_API_KEY=your_firebase_api_key
-   FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   STRIPE_WEBHOOK_SECRET=your_stripe_webhook_secret
+   FIREBASE_TYPE=service_account
    FIREBASE_PROJECT_ID=your_firebase_project_id
-   FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
-   FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
-   FIREBASE_APP_ID=your_firebase_app_id
+   FIREBASE_PRIVATE_KEY_ID=your_firebase_private_key_id
+   FIREBASE_PRIVATE_KEY=your_firebase_private_key
    ```
+
+   **⚠️ IMPORTANT**: Make sure to use `MONGO_URI` (not `MONGODB_URI`) as this is what your server code expects.
 
 5. **Deploy**
    - Click "Create Web Service"
@@ -370,7 +381,7 @@ urban-canvas/
    - **Publish directory**: `dist`
 
 4. **Set Environment Variables**
-   Go to Site settings → Environment variables and add:
+   Go to Site Settings → Environment Variables and add:
    ```env
    VITE_API_BASE_URL=https://your-render-service-url.onrender.com/api
    VITE_FIREBASE_API_KEY=your_firebase_api_key
@@ -384,7 +395,7 @@ urban-canvas/
 5. **Deploy**
    - Click "Deploy site"
    - Wait for build to complete
-   - Your site will be live at `https://your-site-name.netlify.app`
+   - Your site will be live at `https://your-project-name.netlify.app`
 
 ---
 
@@ -405,7 +416,7 @@ app.use(cors({
 
 1. **Test Backend API**
    - Visit your Render service URL
-   - Should see a welcome message or API documentation
+   - Should see "Urban Canvas server is running!" message
 
 2. **Test Frontend**
    - Visit your Netlify site URL
@@ -422,23 +433,31 @@ app.use(cors({
 #### Common Issues:
 
 1. **Build Failures**
-   - Check Node.js version compatibility
+   - Check Node.js version compatibility (requires >=16.0.0)
    - Ensure all dependencies are in package.json
    - Verify build commands are correct
 
 2. **Environment Variables**
+   - **CRITICAL**: Use `MONGO_URI` (not `MONGODB_URI`) for MongoDB connection
    - Double-check all environment variable names
    - Ensure no extra spaces or quotes
    - Verify API URLs are correct
 
-3. **CORS Errors**
+3. **MongoDB Connection Issues**
+   - **Error**: "MONGO_URI environment variable is not set!"
+   - **Solution**: Add `MONGO_URI` to Render environment variables
+   - Verify MongoDB Atlas connection string format
+   - Check IP whitelist in MongoDB Atlas
+   - Ensure database user has correct permissions
+
+4. **CORS Errors**
    - Update CORS configuration with your Netlify domain
    - Check browser console for specific error messages
 
-4. **Database Connection**
-   - Verify MongoDB Atlas connection string
-   - Check IP whitelist in MongoDB Atlas
-   - Ensure database user has correct permissions
+5. **Firebase Issues**
+   - Verify Firebase Admin SDK configuration
+   - Check private key format (should include newlines)
+   - Ensure Firebase project ID matches
 
 #### Performance Optimization:
 
@@ -459,7 +478,7 @@ app.use(cors({
 ### Alternative Deployment Options
 
 #### Frontend Alternatives:
-- **Vercel**: Similar to Netlify, great for React apps
+- **Vercel**: Great for static sites and React apps
 - **GitHub Pages**: Free hosting for static sites
 - **Firebase Hosting**: Google's hosting solution
 
@@ -468,6 +487,26 @@ app.use(cors({
 - **Heroku**: Popular platform with good documentation
 - **DigitalOcean App Platform**: Scalable and reliable
 - **AWS/Google Cloud**: Enterprise-grade solutions
+
+## 🔒 Security Notes
+
+### Environment Variables
+- **NEVER commit `.env` files to version control**
+- Use different environment variables for development and production
+- Rotate secrets regularly
+- Use strong, unique secrets for JWT and other sensitive data
+
+### Database Security
+- Use MongoDB Atlas with proper authentication
+- Whitelist only necessary IP addresses
+- Use strong database passwords
+- Enable MongoDB Atlas security features
+
+### API Security
+- Implement rate limiting
+- Use HTTPS in production
+- Validate all input data
+- Implement proper error handling
 
 ## 🤝 Contributing
 
@@ -481,10 +520,3 @@ app.use(cors({
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- React and Vite for the amazing development experience
-- Tailwind CSS for the utility-first styling approach
-- MongoDB for the flexible database solution
-- Firebase for secure authentication
-- All contributors and users of this platform 
