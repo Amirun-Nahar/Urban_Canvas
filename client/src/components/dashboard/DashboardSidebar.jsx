@@ -10,7 +10,8 @@ import {
   FaUsers, 
   FaCheckCircle, 
   FaAd, 
-  FaPlus
+  FaPlus,
+  FaChartLine
 } from 'react-icons/fa';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -40,6 +41,20 @@ const DashboardSidebar = ({ isOpen }) => {
             <NavLink to="/dashboard" end className={linkClasses}>
               <FaHome />
               <span>Dashboard Home</span>
+            </NavLink>
+          </li>
+          
+          <li>
+            <NavLink to="/dashboard/overview" className={linkClasses}>
+              <FaChartLine />
+              <span>Overview</span>
+            </NavLink>
+          </li>
+          
+          <li>
+            <NavLink to="/dashboard/profile" className={linkClasses}>
+              <FaUserCog />
+              <span>Profile</span>
             </NavLink>
           </li>
           
