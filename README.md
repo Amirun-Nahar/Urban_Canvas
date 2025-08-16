@@ -4,7 +4,7 @@ A modern, full-stack real estate platform built with React, Node.js, and MongoDB
 
 ## 🌟 Live Demo
 
-**[Urban Canvas Live Site](https://urbancanvas.vercel.app)**
+**[Urban Canvas Live Site](https://urban-canvas.netlify.app/)**
 
 ## ✨ Key Features
 
