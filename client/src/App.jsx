@@ -22,6 +22,8 @@ import NotFound from './pages/NotFound';
 
 // Dashboard Pages
 import Dashboard from './pages/dashboard/Dashboard';
+import Profile from './pages/dashboard/Profile';
+import Overview from './pages/dashboard/Overview';
 
 // User Dashboard Pages
 import Wishlist from './pages/dashboard/user/Wishlist';
@@ -78,6 +80,8 @@ function App() {
               }>
                 {/* Dashboard Home */}
                 <Route index element={<Dashboard />} />
+                <Route path="overview" element={<Overview />} />
+                <Route path="profile" element={<Profile />} />
                 
                 {/* User Dashboard Routes */}
                 <Route path="wishlist" element={<Wishlist />} />
